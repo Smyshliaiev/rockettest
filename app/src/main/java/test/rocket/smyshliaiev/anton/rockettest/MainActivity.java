@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
         public void onClick(View view) {
 
             SoapTest soapTest = new SoapTest();
-            soapTest.doRequest();
+                soapTest.doAsynJob();
 
         }
     };
