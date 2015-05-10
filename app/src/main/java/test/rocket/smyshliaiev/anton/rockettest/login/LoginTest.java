@@ -8,11 +8,14 @@ import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.simpleframework.xml.Serializer;
@@ -27,6 +30,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -79,14 +84,19 @@ public class LoginTest {
     }
 
     private void sendHttpPostLogin(String xmlString){
+
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost("https://fly.rocketroute.com/remote/auth");
 
 
         try {
             StringEntity se = new StringEntity( xmlString, HTTP.UTF_8);
-            se.setContentType("text/xml");
-            httppost.setEntity(se);
+            se.setContentType("application/x-www-form-urlencoded");
+
+            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+
+            urlParameters.add(new BasicNameValuePair("req", xmlString));
+            httppost.setEntity(new UrlEncodedFormEntity(urlParameters));
 
             HttpResponse httpresponse = httpclient.execute(httppost);
             HttpEntity resEntity = httpresponse.getEntity();
@@ -133,7 +143,8 @@ public class LoginTest {
 //        File result = new File(Environment.getExternalStorageDirectory(), "auth.xml");
 //        serializer.write(xml, result);
 
-        AuthRespBad answer = serializer.read(AuthRespBad.class, new StringReader(xml));
+        //AuthRespBad answer = serializer.read(AuthRespBad.class, new StringReader(xml));
+        AuthRespGood answer = serializer.read(AuthRespGood.class, new StringReader(xml));
 
         int a=0;
         a++;
