@@ -4,23 +4,24 @@ package test.rocket.smyshliaiev.anton.rockettest;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.Xml;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,26 +46,10 @@ public class SoapTest {
 //    };
     private static final String TAG = SoapTest.class.getSimpleName();
 
-    public void doRequest() throws IOException {
- /*       String reqXML = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                "   <SOAP-ENV:Body>\n" +
-                "      <request><![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
-                " <REQNOTAM>\n" +
-                " <USR>user.name@gmail.com</USR>\n" +
-                " <PASSWD>222222</PASSWD>\n" +
-                " <ICAO>EGKA</ICAO>\n" +
-                " <ICAO>LFAT</ICAO>\n" +
-                " </REQNOTAM>]]></request>\n" +
-                "   </SOAP-ENV:Body>\n" +
-                "</SOAP-ENV:Envelope>";
+    public void doRequest() throws IOException, XmlPullParserException {
 
 
-        String req = constuctSOAPRequest(reqXML);
-        sendSOAPRequest("https://apidev.rocketroute.com/notam/v1/service.wsdl",req,"urn:xmethods-notam#getNotam");
-        getSOAPResponse("https://apidev.rocketroute.com/notam/v1/service.wsdl",req,"urn:xmethods-notam#getNotam", "");
-*/
-
-
+/*
         URL oURL = new URL("https://apidev.rocketroute.com/notam/v1/");
         HttpsURLConnection con = (HttpsURLConnection) oURL.openConnection();
         con.setRequestMethod("POST");
@@ -82,7 +67,7 @@ public class SoapTest {
                 " <REQNOTAM>\n" +
                 " <USR>anton.emale@gmail.com</USR>\n" +
                 " <PASSWD>ec118fa4b3679e3a2460a032ab300269</PASSWD>\n" +
-                " <ICAO>EGKA</ICAO>\n" +
+                " <ICAO>LEIB</ICAO>\n" +
 //              " <KEY>4aef59a8e958c87e89e98409d7c9ba7a</KEY>\n" +
                 " </REQNOTAM>]]></request>\n" +
                 "   </SOAP-ENV:Body>\n" +
@@ -105,30 +90,200 @@ public class SoapTest {
             Log.d("TAG", "inputLine: " + inputLine);
         }
         String result = sb.toString();
-        dodo(result);
+    */
+
+        String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Body><response>&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;REQNOTAM&gt;&lt;RESULT&gt;0&lt;/RESULT&gt;&lt;NOTAMSET ICAO=\"LEIB\"&gt;&lt;NOTAM id=\"B3148/15\"&gt;&lt;ItemQ&gt;LECB/QMXXX/IV/M /A /000/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;07 MAY 2015 18:07&lt;/ItemB&gt;&lt;ItemC&gt;15 MAY 2015 16:00&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;WIP TWY C IN SHOULDER CLOSE HOLDING POINT RWY06 AND CLOSE HOLDING POINT RWY24&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;NOTAM id=\"B1713/15\"&gt;&lt;ItemQ&gt;LECB/QPITT/I/BO /A /000/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;30 APR 2015 00:00&lt;/ItemB&gt;&lt;ItemC&gt;13 MAY 2015 23:59&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;TRIGGER NOTAM - PERM AIP AIRAC AMDT 03/15 WEF 30-APR-15 MAGNETIC VARIATION, AIRPORT OPERATION HOURS, LOCAL REGULATIONS, FLIGHT PROCEDURES, MAGNETIC VARIATION, HEADINGS AND AMA UPDATE IN ALL THE CHARTS, NOTES IN STAR CHARTS, 4.3 DME IBA BEARING AT ACL IN IAC/1, 4.5 DME ILS AND 5.6 DME IBA BEARINGS AT ACL IN IAC/4, 1.8 DME IBA BEARING AT MAPT IN IAC/5, OBSTACLE REFERENCE NOTE IN VAC.&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;NOTAM id=\"B0768/15\"&gt;&lt;ItemQ&gt;LECB/QFAAH/IV/NBO /A /0/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;10 FEB 2015 16:18&lt;/ItemB&gt;&lt;ItemC&gt;PERM&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;REF AD 2-LEIB ITEM 3. HOURS OF OPERATION, MODIFY AS FOLLOWS:-WHERE IT SAYS: AIRPORT: I: FROM NOV 1ST TIL MAR 31ST: 0630-2300-IT SHOULD SAY: AIRPORT: I: FROM NOV 1ST: 0630-2300&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;/NOTAMSET&gt;&lt;/REQNOTAM&gt;</response></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        //readXml(result);
+        List<String> itemsq = extractResponseItemQ(result);
+        List<String> itemse = extractResponseItemE(result);
+        for(String req :itemsq){
+            Log.d(TAG, "req itemq: " + req);
+        }
+
+        for(String req :itemse){
+            Log.d(TAG, "req iteme: " + req);
+        }
+
         Log.d("TAG","result: " + result);
 
     }
 
-    public void dodo(String xml){
+    public void readXml(String xml) throws XmlPullParserException, IOException {
         //String line = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Body><response>&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;REQNOTAM&gt;&lt;RESULT&gt;0&lt;/RESULT&gt;&lt;NOTAMSET ICAO=\"EGKA\"&gt;&lt;NOTAM id=\"C1451/15\"&gt;&lt;ItemQ&gt;EGTT/QMRLL/IV/NBO /A /000/999/5050N00018W&lt;/ItemQ&gt;&lt;ItemA&gt;EGKA&lt;/ItemA&gt;&lt;ItemB&gt;15 MAR 2015 10:30&lt;/ItemB&gt;&lt;ItemC&gt;10 JUN 2015 19:00&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;GRASS RWY 07/25 DECLARED DISTANCES (IN METRES):RWY 07: TORA 682 TODA 682 ASDA 682 LDA 682RWY 25: TORA 682 TODA 682 ASDA 682 LDA 599RWY 07 THR DISPLACED BY 195M, INDICATED BY BLACK/WHITE BOARDS&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;/NOTAMSET&gt;&lt;/REQNOTAM&gt;</response></SOAP-ENV:Body></SOAP-ENV:Envelope>";
         String line = xml;
-        String pattern = "(?<=ItemE&gt;).*?(?=&lt;/ItemE)";
+        //String pattern = "(?<=ItemE&gt;).*?(?=&lt;/ItemE)";
+        String pattern = "(<response>).*?(</response>)";
+
+        // Create a Pattern object
+        Pattern r = Pattern.compile(pattern);
+
+        String getResponseXml = null;
+
+        // Now create matcher object.
+        Matcher m = r.matcher(line);
+        if (m.find( )) {
+            getResponseXml = m.group(0);
+            System.out.println("Found value: " + getResponseXml );
+//            System.out.println("Found value: " + m.group(1) );
+//            System.out.println("Found value: " + m.group(2) );
+        } else {
+            System.out.println("NO MATCH");
+        }
+
+        String response = extractResponse(getResponseXml);
+
+        InputStream stream = new ByteArrayInputStream(response.getBytes(Charset.forName("UTF-8")));
+
+        XmlPullParser parser = Xml.newPullParser();
+        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+        parser.setInput(stream, null);
+        parser.nextTag();
+
+        List<Reqnotam> list = readFeed(parser);
+
+        for(Reqnotam req :list){
+            Log.d(TAG, "req: " + req);
+        }
+
+    }
+
+    public List<String> extractResponseItemQ(String xml){
+
+        List<String> itemq = new ArrayList<>();
+
+        String pattern = "ItemQ(.+?)/ItemQ";
+
+        // Create a Pattern object
+        Pattern r = Pattern.compile(pattern, Pattern.MULTILINE);
+
+        // Now create matcher object.
+        Matcher m = r.matcher(xml);
+        while (m.find( )) {
+            itemq.add(m.group(1));
+        }
+
+        return itemq;
+    }
+
+    public List<String> extractResponseItemE(String xml){
+
+        List<String> itemq = new ArrayList<>();
+
+        String pattern = "ItemE(.+?)/ItemE";
+
+        // Create a Pattern object
+        Pattern r = Pattern.compile(pattern, Pattern.MULTILINE);
+
+        // Now create matcher object.
+        Matcher m = r.matcher(xml);
+        while (m.find( )) {
+            itemq.add(m.group(1));
+        }
+
+        return itemq;
+    }
+
+
+    public String extractResponse(String xml){
+        //String line = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Body><response>&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;REQNOTAM&gt;&lt;RESULT&gt;0&lt;/RESULT&gt;&lt;NOTAMSET ICAO=\"LEIB\"&gt;&lt;NOTAM id=\"B3148/15\"&gt;&lt;ItemQ&gt;LECB/QMXXX/IV/M /A /000/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;07 MAY 2015 18:07&lt;/ItemB&gt;&lt;ItemC&gt;15 MAY 2015 16:00&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;WIP TWY C IN SHOULDER CLOSE HOLDING POINT RWY06 AND CLOSE HOLDING POINT RWY24&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;NOTAM id=\"B1713/15\"&gt;&lt;ItemQ&gt;LECB/QPITT/I/BO /A /000/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;30 APR 2015 00:00&lt;/ItemB&gt;&lt;ItemC&gt;13 MAY 2015 23:59&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;TRIGGER NOTAM - PERM AIP AIRAC AMDT 03/15 WEF 30-APR-15 MAGNETIC VARIATION, AIRPORT OPERATION HOURS, LOCAL REGULATIONS, FLIGHT PROCEDURES, MAGNETIC VARIATION, HEADINGS AND AMA UPDATE IN ALL THE CHARTS, NOTES IN STAR CHARTS, 4.3 DME IBA BEARING AT ACL IN IAC/1, 4.5 DME ILS AND 5.6 DME IBA BEARINGS AT ACL IN IAC/4, 1.8 DME IBA BEARING AT MAPT IN IAC/5, OBSTACLE REFERENCE NOTE IN VAC.&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;NOTAM id=\"B0768/15\"&gt;&lt;ItemQ&gt;LECB/QFAAH/IV/NBO /A /0/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;10 FEB 2015 16:18&lt;/ItemB&gt;&lt;ItemC&gt;PERM&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;REF AD 2-LEIB ITEM 3. HOURS OF OPERATION, MODIFY AS FOLLOWS:-WHERE IT SAYS: AIRPORT: I: FROM NOV 1ST TIL MAR 31ST: 0630-2300-IT SHOULD SAY: AIRPORT: I: FROM NOV 1ST: 0630-2300&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;/NOTAMSET&gt;&lt;/REQNOTAM&gt;</response></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        String line = xml;
+        String pattern = "(<response>).*?(</response>)";
 
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern);
 
         // Now create matcher object.
         Matcher m = r.matcher(line);
-        if (m.find( )) {
-            System.out.println("Found value: " + m.group(0) );
-//            System.out.println("Found value: " + m.group(1) );
-//            System.out.println("Found value: " + m.group(2) );
-        } else {
-            System.out.println("NO MATCH");
+
+        String response = "";
+        while (m.find( )) {
+            response = m.group(0);
+                System.out.println("Found value " + response);
+
+        }
+
+        return response;
+    }
+
+
+    private List<Reqnotam> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+        List entries = new ArrayList();
+
+        parser.require(XmlPullParser.START_TAG, null, "response");
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            // Starts by looking for the entry tag
+            if (name.equals("entry")) {
+                entries.add(readEntry(parser));
+            } else {
+                skip(parser);
+            }
+        }
+        return entries;
+    }
+
+    private Reqnotam readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
+        parser.require(XmlPullParser.START_TAG, null, "REQNOTAM");
+        String title = null;
+        String summary = null;
+        String link = null;
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            if (name.equals("ITEMQ")) {
+                title = readTitle(parser);
+            } else {
+                skip(parser);
+            }
+        }
+        return new Reqnotam(title);
+    }
+
+    private String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, null, "ITEMQ");
+        String title = readText(parser);
+        parser.require(XmlPullParser.END_TAG, null, "ITEMQ");
+        return title;
+    }
+
+    private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
+        String result = "";
+        if (parser.next() == XmlPullParser.TEXT) {
+            result = parser.getText();
+            parser.nextTag();
+        }
+        return result;
+    }
+
+    private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
+        if (parser.getEventType() != XmlPullParser.START_TAG) {
+            throw new IllegalStateException();
+        }
+        int depth = 1;
+        while (depth != 0) {
+            switch (parser.next()) {
+                case XmlPullParser.END_TAG:
+                    depth--;
+                    break;
+                case XmlPullParser.START_TAG:
+                    depth++;
+                    break;
+            }
         }
     }
 
+    public static class Reqnotam {
+        public final String itemq;
+
+        private Reqnotam(String itemq) {
+            this.itemq = itemq;
+        }
+    }
 
     public void doAsynJob(){
         MyTask myTask = new MyTask();
@@ -147,6 +302,8 @@ public class SoapTest {
             try {
                 doRequest();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
                 e.printStackTrace();
             }
             return null;
