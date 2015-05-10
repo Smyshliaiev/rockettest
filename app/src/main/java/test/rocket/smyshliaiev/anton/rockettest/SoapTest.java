@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.cert.X509Certificate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -67,6 +69,8 @@ public class SoapTest {
         HttpsURLConnection con = (HttpsURLConnection) oURL.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-type", "text/xml; charset=utf-8");
+        con.setRequestProperty("accept-charset", "UTF-8");
+//        con.setRequestProperty("Accept-Encoding", "gzip");
         con.setRequestProperty("SOAPAction", "urn:xmethods-notam#getNotam");
         //con.setRequestProperty("Accept-Encoding", "gzip");
 
@@ -96,12 +100,35 @@ public class SoapTest {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String inputLine = "";
         while ((inputLine = br.readLine()) != null) {
+            inputLine = java.net.URLDecoder.decode(inputLine, "UTF-8");
             sb.append(inputLine);
+            Log.d("TAG", "inputLine: " + inputLine);
         }
         String result = sb.toString();
+        dodo(result);
         Log.d("TAG","result: " + result);
 
     }
+
+    public void dodo(String xml){
+        //String line = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Body><response>&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;REQNOTAM&gt;&lt;RESULT&gt;0&lt;/RESULT&gt;&lt;NOTAMSET ICAO=\"EGKA\"&gt;&lt;NOTAM id=\"C1451/15\"&gt;&lt;ItemQ&gt;EGTT/QMRLL/IV/NBO /A /000/999/5050N00018W&lt;/ItemQ&gt;&lt;ItemA&gt;EGKA&lt;/ItemA&gt;&lt;ItemB&gt;15 MAR 2015 10:30&lt;/ItemB&gt;&lt;ItemC&gt;10 JUN 2015 19:00&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;GRASS RWY 07/25 DECLARED DISTANCES (IN METRES):RWY 07: TORA 682 TODA 682 ASDA 682 LDA 682RWY 25: TORA 682 TODA 682 ASDA 682 LDA 599RWY 07 THR DISPLACED BY 195M, INDICATED BY BLACK/WHITE BOARDS&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;/NOTAMSET&gt;&lt;/REQNOTAM&gt;</response></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        String line = xml;
+        String pattern = "(?<=ItemE&gt;).*?(?=&lt;/ItemE)";
+
+        // Create a Pattern object
+        Pattern r = Pattern.compile(pattern);
+
+        // Now create matcher object.
+        Matcher m = r.matcher(line);
+        if (m.find( )) {
+            System.out.println("Found value: " + m.group(0) );
+//            System.out.println("Found value: " + m.group(1) );
+//            System.out.println("Found value: " + m.group(2) );
+        } else {
+            System.out.println("NO MATCH");
+        }
+    }
+
 
     public void doAsynJob(){
         MyTask myTask = new MyTask();
