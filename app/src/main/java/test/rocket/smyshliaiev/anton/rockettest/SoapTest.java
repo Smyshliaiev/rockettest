@@ -79,7 +79,7 @@ public class SoapTest {
                 " <USR>anton.emale@gmail.com</USR>\n" +
                 " <PASSWD>ec118fa4b3679e3a2460a032ab300269</PASSWD>\n" +
                 " <ICAO>EGKA</ICAO>\n" +
-//                " <KEY>4aef59a8e958c87e89e98409d7c9ba7a</KEY>\n" +
+//              " <KEY>4aef59a8e958c87e89e98409d7c9ba7a</KEY>\n" +
                 " </REQNOTAM>]]></request>\n" +
                 "   </SOAP-ENV:Body>\n" +
                 "</SOAP-ENV:Envelope>";
