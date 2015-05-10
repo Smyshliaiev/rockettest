@@ -9,6 +9,7 @@ import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class SoapTest {
     public void doRequest() throws IOException, XmlPullParserException {
 
 
-/*
+
         URL oURL = new URL("https://apidev.rocketroute.com/notam/v1/");
         HttpsURLConnection con = (HttpsURLConnection) oURL.openConnection();
         con.setRequestMethod("POST");
@@ -90,9 +91,9 @@ public class SoapTest {
             Log.d("TAG", "inputLine: " + inputLine);
         }
         String result = sb.toString();
-    */
 
-        String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Body><response>&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;REQNOTAM&gt;&lt;RESULT&gt;0&lt;/RESULT&gt;&lt;NOTAMSET ICAO=\"LEIB\"&gt;&lt;NOTAM id=\"B3148/15\"&gt;&lt;ItemQ&gt;LECB/QMXXX/IV/M /A /000/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;07 MAY 2015 18:07&lt;/ItemB&gt;&lt;ItemC&gt;15 MAY 2015 16:00&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;WIP TWY C IN SHOULDER CLOSE HOLDING POINT RWY06 AND CLOSE HOLDING POINT RWY24&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;NOTAM id=\"B1713/15\"&gt;&lt;ItemQ&gt;LECB/QPITT/I/BO /A /000/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;30 APR 2015 00:00&lt;/ItemB&gt;&lt;ItemC&gt;13 MAY 2015 23:59&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;TRIGGER NOTAM - PERM AIP AIRAC AMDT 03/15 WEF 30-APR-15 MAGNETIC VARIATION, AIRPORT OPERATION HOURS, LOCAL REGULATIONS, FLIGHT PROCEDURES, MAGNETIC VARIATION, HEADINGS AND AMA UPDATE IN ALL THE CHARTS, NOTES IN STAR CHARTS, 4.3 DME IBA BEARING AT ACL IN IAC/1, 4.5 DME ILS AND 5.6 DME IBA BEARINGS AT ACL IN IAC/4, 1.8 DME IBA BEARING AT MAPT IN IAC/5, OBSTACLE REFERENCE NOTE IN VAC.&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;NOTAM id=\"B0768/15\"&gt;&lt;ItemQ&gt;LECB/QFAAH/IV/NBO /A /0/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;10 FEB 2015 16:18&lt;/ItemB&gt;&lt;ItemC&gt;PERM&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;REF AD 2-LEIB ITEM 3. HOURS OF OPERATION, MODIFY AS FOLLOWS:-WHERE IT SAYS: AIRPORT: I: FROM NOV 1ST TIL MAR 31ST: 0630-2300-IT SHOULD SAY: AIRPORT: I: FROM NOV 1ST: 0630-2300&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;/NOTAMSET&gt;&lt;/REQNOTAM&gt;</response></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+
+        //String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Body><response>&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;REQNOTAM&gt;&lt;RESULT&gt;0&lt;/RESULT&gt;&lt;NOTAMSET ICAO=\"LEIB\"&gt;&lt;NOTAM id=\"B3148/15\"&gt;&lt;ItemQ&gt;LECB/QMXXX/IV/M /A /000/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;07 MAY 2015 18:07&lt;/ItemB&gt;&lt;ItemC&gt;15 MAY 2015 16:00&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;WIP TWY C IN SHOULDER CLOSE HOLDING POINT RWY06 AND CLOSE HOLDING POINT RWY24&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;NOTAM id=\"B1713/15\"&gt;&lt;ItemQ&gt;LECB/QPITT/I/BO /A /000/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;30 APR 2015 00:00&lt;/ItemB&gt;&lt;ItemC&gt;13 MAY 2015 23:59&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;TRIGGER NOTAM - PERM AIP AIRAC AMDT 03/15 WEF 30-APR-15 MAGNETIC VARIATION, AIRPORT OPERATION HOURS, LOCAL REGULATIONS, FLIGHT PROCEDURES, MAGNETIC VARIATION, HEADINGS AND AMA UPDATE IN ALL THE CHARTS, NOTES IN STAR CHARTS, 4.3 DME IBA BEARING AT ACL IN IAC/1, 4.5 DME ILS AND 5.6 DME IBA BEARINGS AT ACL IN IAC/4, 1.8 DME IBA BEARING AT MAPT IN IAC/5, OBSTACLE REFERENCE NOTE IN VAC.&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;NOTAM id=\"B0768/15\"&gt;&lt;ItemQ&gt;LECB/QFAAH/IV/NBO /A /0/999/3852N00122E&lt;/ItemQ&gt;&lt;ItemA&gt;LEIB&lt;/ItemA&gt;&lt;ItemB&gt;10 FEB 2015 16:18&lt;/ItemB&gt;&lt;ItemC&gt;PERM&lt;/ItemC&gt;&lt;ItemD&gt;&lt;/ItemD&gt;&lt;ItemE&gt;REF AD 2-LEIB ITEM 3. HOURS OF OPERATION, MODIFY AS FOLLOWS:-WHERE IT SAYS: AIRPORT: I: FROM NOV 1ST TIL MAR 31ST: 0630-2300-IT SHOULD SAY: AIRPORT: I: FROM NOV 1ST: 0630-2300&lt;/ItemE&gt;&lt;/NOTAM&gt;&lt;/NOTAMSET&gt;&lt;/REQNOTAM&gt;</response></SOAP-ENV:Body></SOAP-ENV:Envelope>";
         //readXml(result);
         List<String> itemsq = extractResponseItemQ(result);
         List<String> itemse = extractResponseItemE(result);

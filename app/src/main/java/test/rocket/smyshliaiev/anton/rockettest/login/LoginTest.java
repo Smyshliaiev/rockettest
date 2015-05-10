@@ -23,8 +23,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Toxa on 07.05.2015.
@@ -110,6 +114,7 @@ public class LoginTest {
         authReq.setUsr("anton.emale@gmail.com");
         authReq.setPasswd(getMd5("mordskerl"));
         //authReq.setDeviceid("1299f2aa8935b9ffabcd4a2cbcd16b8d45691629");
+        // psw ec118fa4b3679e3a2460a032ab300269
         authReq.setDeviceid(getDeviceId());
         authReq.setPcategory("RocketRoute");
         authReq.setAppmd5("0Q4eaueC>c2517yGT41PKYt");
@@ -183,4 +188,20 @@ public class LoginTest {
 //
 //        return sb.toString();
 //    }
+
+
+    public void newLogin() throws IOException {
+        URL oURL = new URL("https://apidev.rocketroute.com/notam/v1/");
+        HttpsURLConnection con = (HttpsURLConnection) oURL.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-type", "text/xml; charset=utf-8");
+        con.setRequestProperty("accept-charset", "UTF-8");
+//        con.setRequestProperty("Accept-Encoding", "gzip");
+        con.setRequestProperty("SOAPAction", "urn:xmethods-notam#getNotam");
+        //con.setRequestProperty("Accept-Encoding", "gzip");
+
+        con.setDoOutput(true);
+
+        String reqXML = "";
+    }
 }
