@@ -1,11 +1,15 @@
 package test.rocket.smyshliaiev.anton.rockettest;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -68,8 +72,12 @@ public class MainActivity extends ActionBarActivity {
     View.OnClickListener mTestClickListenerLogin = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            LoginTest loginTest = new LoginTest(getApplicationContext());
-            loginTest.testLogin();
+            if(isNetworkAvailable()) {
+                LoginTest loginTest = new LoginTest(getApplicationContext());
+                loginTest.testLogin();
+            }else{
+                Toast.makeText(getApplicationContext(), "Check internet connection", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -77,11 +85,22 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onClick(View view) {
 
-            SoapTest soapTest = new SoapTest();
+            if(isNetworkAvailable()) {
+                SoapTest soapTest = new SoapTest();
                 soapTest.doAsynJob();
+            }else{
+                Toast.makeText(getApplicationContext(), "Check internet connection", Toast.LENGTH_SHORT).show();
+            }
 
         }
     };
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 //    public String httpPost(String method, String data)
 //            throws ClientProtocolException, IOException {

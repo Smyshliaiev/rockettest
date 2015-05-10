@@ -7,9 +7,8 @@ import org.simpleframework.xml.Root;
  * Created by Toxa on 07.05.2015.
  */
 @Root(name="AUTH")
-public class AuthRespGood {
-    @Element(name="RESULT")
-    private String result;
+public class AuthRespGood extends AuthResp{
+
     @Element(name="KEY")
     private String key;
     @Element(name="ISSUBSCRIPT", required=false)
@@ -28,4 +27,7 @@ public class AuthRespGood {
     private String enddate;
 
 
+    public String getKey() {
+        return key;
+    }
 }

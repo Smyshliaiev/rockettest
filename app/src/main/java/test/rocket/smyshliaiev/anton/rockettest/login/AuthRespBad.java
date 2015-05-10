@@ -10,9 +10,7 @@ import java.util.ArrayList;
  * Created by Toxa on 08.05.2015.
  */
 @Root(name="AUTH")
-public class AuthRespBad {
-    @Element(name="RESULT")
-    private String result;
+public class AuthRespBad extends AuthResp{
     @Element(name="MESSAGES", required=false)
     private Msg messages;
 

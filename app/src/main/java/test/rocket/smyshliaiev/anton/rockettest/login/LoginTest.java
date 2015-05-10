@@ -42,6 +42,7 @@ public class LoginTest {
 
 
     private static final String TAG = LoginTest.class.getSimpleName();
+    private static final String SUCCESS = "SUCCESS";
     private Context mContext;
 
     public LoginTest(Context mContext) {
@@ -73,6 +74,7 @@ public class LoginTest {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             return null;
         }
 
@@ -81,6 +83,10 @@ public class LoginTest {
             super.onPostExecute(result);
 
         }
+    }
+
+    private void sendHttpQuery(String xmlQuery) {
+
     }
 
     private void sendHttpPostLogin(String xmlString){
@@ -138,18 +144,29 @@ public class LoginTest {
         return ret;
     }
 
-    private String mapLoginFromXml(String xml) throws Exception {
+    private AuthResp mapLoginFromXml(String xml) {
         Serializer serializer = new Persister();
-//        File result = new File(Environment.getExternalStorageDirectory(), "auth.xml");
-//        serializer.write(xml, result);
 
-        //AuthRespBad answer = serializer.read(AuthRespBad.class, new StringReader(xml));
-        AuthRespGood answer = serializer.read(AuthRespGood.class, new StringReader(xml));
+        AuthResp resp = null;
+        try {
+            resp = serializer.read(AuthRespGood.class, new StringReader(xml));
+            if(resp != null && resp.getResult().equals(SUCCESS)) {
+                return resp;
+            }
 
-        int a=0;
-        a++;
+        } catch (Exception e) {
+            Log.e(TAG, "Login response is not successful.");
+        }
 
-        return answer.toString();
+        try {
+            resp = serializer.read(AuthRespBad.class, new StringReader(xml));
+                return resp;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resp;
+
     }
 
 
